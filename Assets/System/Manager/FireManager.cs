@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Linq;
 public class FireManager : MonoBehaviour
 {
 
@@ -20,8 +20,10 @@ public class FireManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        pool = new ObjectPool(originObject, TileManager.STAGE_MAX_SIZE * TileManager.STAGE_MAX_SIZE);
+        var tileNum = FindObjectOfType<TileManager>().tileNum;
+        pool = new ObjectPool(originObject, tileNum);
         fireObject = FindObjectsOfType<FireObject>();
+
         StartCoroutine(fireAnimation());
     }
 
@@ -50,10 +52,11 @@ public class FireManager : MonoBehaviour
                 }
 
             }
-            foreach(var sprite in fireObject)
-            {
-                sprite.spriteRenderer.sprite = currentSprite;
-            }
+
+            fireObject.Where(x => x.gameObject.activeSelf).
+                       Select(x => x.spriteRenderer.sprite = currentSprite);
+            
+
             yield return null;
         }
     }

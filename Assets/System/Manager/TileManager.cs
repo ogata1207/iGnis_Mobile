@@ -14,6 +14,9 @@ public class BlockRegistry
 public class TileManager : MonoBehaviour {
 
     static public readonly int STAGE_MAX_SIZE = 50;
+
+    public int tileNum;
+
     //地形
     public Tilemap tileMap;
     
@@ -28,9 +31,10 @@ public class TileManager : MonoBehaviour {
     public BlockRegistry[] registeredBlock;
 
     // Use this for initialization
-    void Start()
+    void Awake()
     { 
         tileIdList = new int[STAGE_MAX_SIZE, STAGE_MAX_SIZE];
+        
 
         //登録されたブロックのIDをタイルにあわせてIDリストに入れる
         for(int y=0;y<STAGE_MAX_SIZE;y++)
@@ -38,9 +42,21 @@ public class TileManager : MonoBehaviour {
             for(int x=0;x<STAGE_MAX_SIZE;x++)
             {
                 var sprite = tileMap.GetSprite(new Vector3Int(x, y, 0));
+
                 foreach(var block in registeredBlock)
                 {
-                    if (block.sprite == sprite) tileIdList[x, y] = block.id;
+                    //一致するタイルがあればそのタイルのIDを入れる
+                    //なければ -1
+                    if (block.sprite == sprite)
+                    {
+                        tileIdList[x, y] = block.id;
+                        tileNum++;
+                    }
+                    else
+                    {
+                        tileIdList[x, y] = -1;
+                    }
+                    
                 }
 
             }

@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4735780754195250}
   - component: {fileID: 212166565895755764}
-  - component: {fileID: 95005663316034060}
+  - component: {fileID: 114132831692451920}
   m_Layer: 0
   m_Name: Fire_0
   m_TagString: Untagged
@@ -70,24 +70,18 @@ Transform:
   m_Father: {fileID: 4550869289214802}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &95005663316034060
-Animator:
-  serializedVersion: 3
+--- !u!114 &114132831692451920
+MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1199963451335000}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ce2f5e3c4cfdedb499acb395c6acd793, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17975be7cdf028b45a721804df5315f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 212166565895755764}
 --- !u!212 &212166565895755764
 SpriteRenderer:
   m_ObjectHideFlags: 1
