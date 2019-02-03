@@ -8,6 +8,7 @@ public class UVScroll : MonoBehaviour {
     public float scrollSpeed;
     public Vector2 scrollPower;
     private Renderer renderer;
+
 	// Use this for initialization
 	void Start () {
         renderer = GetComponent<Renderer>();

@@ -30,9 +30,17 @@ public class TileManager : MonoBehaviour {
     [SerializeField]
     public BlockRegistry[] registeredBlock;
 
+#if UNITY_EDITOR
+    private CursorObject cursor;
+#endif
+
+
     // Use this for initialization
     void Awake()
-    { 
+    {
+#if UNITY_EDITOR
+        cursor = FindObjectOfType<CursorObject>();
+#endif
         tileIdList = new int[STAGE_MAX_SIZE, STAGE_MAX_SIZE];
         
 
@@ -51,6 +59,7 @@ public class TileManager : MonoBehaviour {
                     {
                         tileIdList[x, y] = block.id;
                         tileNum++;
+                        break;
                     }
                     else
                     {
@@ -62,6 +71,18 @@ public class TileManager : MonoBehaviour {
             }
         }
     }
-      
-	
+
+    private void Update()
+    {
+#if UNITY_EDITOR
+        if(Input.GetKeyDown(KeyCode.S))
+        {
+            var x = (int)cursor.transform.position.x;
+            var y = (int)cursor.transform.position.y;
+
+            Debug.Log("Cursor TileID :" + tileIdList[x, y]);
+        }
+        
+#endif
+    }
 }
