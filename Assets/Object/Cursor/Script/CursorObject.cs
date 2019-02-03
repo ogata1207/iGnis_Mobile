@@ -58,7 +58,7 @@ public class CursorObject : MonoBehaviour {
             transform.position = pos + (Vector3)moveDirection;
 
             //カーソルの移動に合わせてカメラを移動
-            cameraController.Move();
+            cameraController.Move(moveDirection);
 
             //瞬間移動対策
             isDelay = true;

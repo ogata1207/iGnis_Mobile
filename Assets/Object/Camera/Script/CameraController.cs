@@ -13,12 +13,12 @@ public class CameraController : MonoBehaviour {
 	void Start () {
         cursor = FindObjectOfType<CursorObject>();
 	}
-	
+
 	// Update is called once per frame
-	public void Move () {
+	public void Move (Vector2 dir) {
 
         //カーソルのポジションをViewport座標に変換
-        var cursorScreenPos = Camera.main.WorldToViewportPoint(cursor.transform.position);
+        var cursorScreenPos = Camera.main.WorldToViewportPoint(cursor.transform.position+(Vector3)dir);
 
         //カーソルが範囲外にでたら追跡する
         var pos = transform.position;
