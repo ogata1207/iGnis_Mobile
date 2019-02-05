@@ -6,10 +6,13 @@ public class FadeController : MonoBehaviour {
 
     public SpriteMask mask;
     public SpriteRenderer renderer;
+    [Range(0.0f, 0.1f)]
+    public float speed;
+
 
 	// Use this for initialization
 	void Start () {
-		
+        mask.frontSortingOrder = 1;
 	}
 
 #if UNITY_EDITOR
@@ -26,7 +29,7 @@ public class FadeController : MonoBehaviour {
 #endif
 
 
-    IEnumerator FadeIn()
+    public IEnumerator FadeIn()
     {
         renderer.enabled = true;
 
@@ -34,21 +37,22 @@ public class FadeController : MonoBehaviour {
         while (value < 1.0f)
         {
             mask.alphaCutoff = value;
-            value += 0.03f;
+            value += speed;
             yield return null;
         }
         renderer.enabled = false;
     }
 
-    IEnumerator FadeOut()
+    public IEnumerator FadeOut()
     {
+        mask.frontSortingOrder = 15;
         renderer.enabled = true;
 
         float value = 0;
         while (value < 1.0f)
         {
             mask.alphaCutoff = 1 - value;
-            value += 0.03f;
+            value += speed;
             yield return null;
         }
     }

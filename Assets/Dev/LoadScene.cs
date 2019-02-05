@@ -4,13 +4,21 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+public enum SceneList
+{
+    Title,
+    SampleScene
+}
+
 public class LoadScene : MonoBehaviour {
 
     public Slider slider;
+    static private string nextScene;
+
 	// Use this for initialization
 	IEnumerator Start () {
 
-        var async = SceneManager.LoadSceneAsync("SampleScene");
+        var async = SceneManager.LoadSceneAsync(nextScene);
 
         async.allowSceneActivation = false;
 
@@ -24,6 +32,11 @@ public class LoadScene : MonoBehaviour {
 
         async.allowSceneActivation = true;
 
+    }
+    static public void RequestScene(string sceneName)
+    {
+        nextScene = sceneName;
+        SceneManager.LoadScene("LoadScene");
     }
 
 }
