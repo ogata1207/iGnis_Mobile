@@ -9,7 +9,7 @@ public class ObjectPool
     public int maxCount;
     public bool[] isUsed;
 
-    public ObjectPool(GameObject originalObject, int num)
+    public ObjectPool(Transform parent,GameObject originalObject, int num)
     {
         maxCount = num;
         isUsed = new bool[num];
@@ -20,6 +20,8 @@ public class ObjectPool
             isUsed[i] = false;
             var obj = GameObject.Instantiate(originalObject);
             obj.name = originalObject.name + i.ToString();
+            obj.SetActive(false);
+            obj.transform.parent = parent;
             pool.Add(obj);
         }
     }
@@ -33,6 +35,7 @@ public class ObjectPool
                 isUsed[i] = true;
                 pool[i].transform.position = position;
                 pool[i].transform.rotation = rotation;
+                pool[i].SetActive(true);
                 return pool[i];
             }
         }

@@ -21,14 +21,17 @@ public class FireManager : MonoBehaviour
     void Start()
     {
         var tileNum = FindObjectOfType<TileManager>().tileNum;
-        pool = new ObjectPool(originObject, tileNum);
+        pool = new ObjectPool(transform, originObject, tileNum);
         fireObject = FindObjectsOfType<FireObject>();
 
         StartCoroutine(fireAnimation());
     }
 
     // Update is called once per frame
-
+    public GameObject GetObject(Vector3 pos, Quaternion rotate)
+    {
+        return pool.GetInstance(pos,rotate);
+    }
 
     IEnumerator fireAnimation()
     {

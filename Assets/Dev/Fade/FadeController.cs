@@ -9,10 +9,11 @@ public class FadeController : MonoBehaviour {
     [Range(0.0f, 0.1f)]
     public float speed;
 
+    public Camera fadeCamera;
 
 	// Use this for initialization
 	void Start () {
-        mask.frontSortingOrder = 1;
+
 	}
 
 #if UNITY_EDITOR
@@ -31,8 +32,11 @@ public class FadeController : MonoBehaviour {
 
     public IEnumerator FadeIn()
     {
+        //カメラとスプライトの描画を有効にする
+        fadeCamera.enabled = true;
         renderer.enabled = true;
 
+        //トランジション
         float value = 0;
         while (value < 1.0f)
         {
@@ -40,14 +44,21 @@ public class FadeController : MonoBehaviour {
             value += speed;
             yield return null;
         }
+
+        //重くなるので次使う時まで無効
+        fadeCamera.enabled = false;
         renderer.enabled = false;
+        
     }
 
     public IEnumerator FadeOut()
     {
-        mask.frontSortingOrder = 15;
-        renderer.enabled = true;
 
+        //カメラとスプライトの描画を有効にする
+        renderer.enabled = true;
+        fadeCamera.enabled = true;
+
+        //トランジション
         float value = 0;
         while (value < 1.0f)
         {

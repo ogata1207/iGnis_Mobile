@@ -15,7 +15,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Fade
   - 
   - 
   - 
@@ -45,4 +45,7 @@ TagManager:
     locked: 0
   - name: FireObject
     uniqueID: 3005528707
+    locked: 0
+  - name: Title
+    uniqueID: 4275958147
     locked: 0
