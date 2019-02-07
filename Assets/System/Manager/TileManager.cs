@@ -23,7 +23,7 @@ public class TileManager : MonoBehaviour {
     //
     static public int[,] tileIdList;
     public GameObject tileObj;
-    private TileObject[,] tileObject;
+    public TileObject[,] tileObject;
 
     [Space(16)]
 
@@ -106,12 +106,20 @@ public class TileManager : MonoBehaviour {
         }
 
 #endif
-        foreach(var tile in tileObject.WithIndex().Where(index=> index.Element.isActive))
+        
+        //各タイルのステイトを更新
+        foreach (var tile in tileObject.WithIndex().Where(index => index.Element.isActive == true))
         {
             tile.Element.state.Update();
         }
     }
 
+    public void Burning()
+    {
+        var x = (int)cursor.transform.position.x;
+        var y = (int)cursor.transform.position.y;
+        tileObject[x, y].SetTime(1.0f);
+    }
 }
 
 

@@ -128,11 +128,11 @@ TextureImporter:
       name: Fire_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 7
         y: 3
         width: 594
         height: 574
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
@@ -152,7 +152,7 @@ TextureImporter:
         y: 6
         width: 586
         height: 565
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
@@ -172,7 +172,7 @@ TextureImporter:
         y: 0
         width: 608
         height: 594
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
@@ -192,7 +192,7 @@ TextureImporter:
         y: 6
         width: 651
         height: 562
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
@@ -212,7 +212,7 @@ TextureImporter:
         y: 6
         width: 688
         height: 582
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
@@ -232,7 +232,7 @@ TextureImporter:
         y: 12
         width: 606
         height: 488
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
@@ -252,7 +252,7 @@ TextureImporter:
         y: 14
         width: 629
         height: 514
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
@@ -272,7 +272,7 @@ TextureImporter:
         y: 14
         width: 606
         height: 526
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
