@@ -12,7 +12,7 @@ public class FireManager : MonoBehaviour
     public ObjectPool pool;
     public GameObject originObject; //炎のオブジェクト
 
-    private FireObject[] fireObject;
+    public FireObject[] fireObject;
 
     static public Sprite currentSprite;
 
@@ -24,6 +24,10 @@ public class FireManager : MonoBehaviour
         pool = new ObjectPool(transform, originObject, tileNum);
         fireObject = FindObjectsOfType<FireObject>();
 
+        foreach(var obj in fireObject)
+        {
+            obj.gameObject.SetActive(false);
+        }
         StartCoroutine(fireAnimation());
     }
 
@@ -56,9 +60,11 @@ public class FireManager : MonoBehaviour
 
             }
 
-            fireObject.Where(x => x.gameObject.activeSelf).
-                       Select(x => x.spriteRenderer.sprite = currentSprite);
-            
+            foreach(var obj in fireObject.Where(x => x.gameObject.activeSelf))
+            {
+                obj.spriteRenderer.sprite = currentSprite;
+            }
+
 
             yield return null;
         }

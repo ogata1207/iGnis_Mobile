@@ -20,7 +20,6 @@ public class ObjectPool
             isUsed[i] = false;
             var obj = GameObject.Instantiate(originalObject);
             obj.name = originalObject.name + i.ToString();
-            obj.SetActive(false);
             obj.transform.parent = parent;
             pool.Add(obj);
         }

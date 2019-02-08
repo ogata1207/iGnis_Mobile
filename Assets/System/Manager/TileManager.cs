@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 using System;
 using System.Linq;
 
+
 [System.Serializable]
 public class BlockRegistry
 {
@@ -14,7 +15,8 @@ public class BlockRegistry
 
 public class TileManager : MonoBehaviour {
 
-    static public readonly int STAGE_MAX_SIZE = 50;
+    [SerializeField]
+    public int STAGE_MAX_SIZE = 50;
 
     public int tileNum;
     //地形
@@ -33,20 +35,16 @@ public class TileManager : MonoBehaviour {
     public BlockRegistry[] registeredBlock;
 
     private TitleState state;
-
-#if UNITY_EDITOR
     private CursorObject cursor;
-#endif
+
 
 
     // Use this for initialization
     void Awake()
     {
         state = FindObjectOfType<TitleState>();
-
-#if UNITY_EDITOR
         cursor = FindObjectOfType<CursorObject>();
-#endif
+
 
 
         tileIdList = new int[STAGE_MAX_SIZE, STAGE_MAX_SIZE];
@@ -78,7 +76,6 @@ public class TileManager : MonoBehaviour {
                 }
                 else
                 {
-                    //tileObject[x, y].tileId = -1;
                     tileIdList[x, y] = -1;
                 }
 
@@ -86,7 +83,7 @@ public class TileManager : MonoBehaviour {
             }
 
         }
-
+        Debug.Log("Tile num : " + tileNum);
     }
 
     void Update()
@@ -96,7 +93,7 @@ public class TileManager : MonoBehaviour {
         {
             var x = (int)cursor.transform.position.x;
             var y = (int)cursor.transform.position.y;
-            tileObject[x, y].SetTime(1.0f);
+            tileObject[x, y].SetTimeAndExecute(1.0f);
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
@@ -106,7 +103,7 @@ public class TileManager : MonoBehaviour {
         }
 
 #endif
-        
+
         //各タイルのステイトを更新
         foreach (var tile in tileObject.WithIndex().Where(index => index.Element.isActive == true))
         {
@@ -118,7 +115,7 @@ public class TileManager : MonoBehaviour {
     {
         var x = (int)cursor.transform.position.x;
         var y = (int)cursor.transform.position.y;
-        tileObject[x, y].SetTime(1.0f);
+        tileObject[x, y].SetTimeAndExecute(1.0f);
     }
 }
 

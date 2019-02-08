@@ -9,6 +9,7 @@ public class FireObject : MonoBehaviour {
     void Start () {
 
         if (fireManager == null) fireManager = FindObjectOfType<FireManager>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
 	}
 
