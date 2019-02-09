@@ -69,4 +69,6 @@ public class FireManager : MonoBehaviour
             yield return null;
         }
     }
+    
+    
 }

@@ -23,7 +23,6 @@ public class CameraController : MonoBehaviour {
         //カーソルが範囲外にでたら追跡する
         var pos = transform.position;
 
-        //各方向の判定
         if (cursorScreenPos.x < chaseMin.x) pos += (Vector3)Vector2.left;      //　左側の判定
         if (cursorScreenPos.x > chaseMax.x) pos += (Vector3)Vector2.right;     //  右側の判定
         if (cursorScreenPos.y < chaseMin.y) pos += (Vector3)Vector2.down;      //  下側の判定

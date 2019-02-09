@@ -5,91 +5,111 @@ using UnityEngine.Tilemaps;
 using System;
 using System.Linq;
 
+using OGT_Utility;
 
-[System.Serializable]
-public class BlockRegistry
-{
-    public int id;
-    public Sprite sprite;
-}
+
 
 public class TileManager : MonoBehaviour {
 
-    [SerializeField]
+    //(テーブルに移動　検討中)
     public int STAGE_MAX_SIZE = 50;
 
+    //ステータス テーブル
+    private TileStatusTable table;
+
+    //燃えるタイルの数
     public int tileNum;
+    
     //地形
     public Tilemap tileMap;
     
-    //
-    static public int[,] tileIdList;
-    public GameObject tileObj;
-    public TileObject[,] tileObject;
+    //タイルオブジェクト(ステイト) 
+    public GameObject baseObj;          //タイルオブジェクト
+    public TileObject[,] tileObject;    //管理用の配列
 
-    [Space(16)]
-
-    [Header("スプライトの登録とIDの振り分け")]
-
-    [SerializeField]
-    public BlockRegistry[] registeredBlock;
-
-    private TitleState state;
     private CursorObject cursor;
-
-
-
+ 
     // Use this for initialization
     void Awake()
     {
-        state = FindObjectOfType<TitleState>();
+        //テーブルを取得
+        table = TileStatusTable.GetInstance;
+
+        //カーソルの取得
         cursor = FindObjectOfType<CursorObject>();
 
 
-
-        tileIdList = new int[STAGE_MAX_SIZE, STAGE_MAX_SIZE];
+        //タイルオブジェクトを生成
+        //中身は各タイルのState
         tileObject = new TileObject[STAGE_MAX_SIZE, STAGE_MAX_SIZE];
         
         //登録されたブロックのIDをタイルにあわせてIDリストに入れる
-        foreach (var item in tileIdList.WithIndex())
+        foreach (var index in tileObject.WithIndex())
         {
+            var x = index.x;
+            var y = index.y;
             
-            var x = item.X;
-            var y = item.Y;
-
+            //スプライトの取得
             var sprite = tileMap.GetSprite(new Vector3Int(x, y, 0));
 
-            foreach (var block in registeredBlock)
+            //登録されているタイルと比較
+            foreach (var block in table.registeredTile)
             {
                 //タイルオブジェクトの生成
-                var obj = Instantiate(tileObj, new Vector3(x, y), transform.rotation);
+                var obj = Instantiate(baseObj, new Vector3(x, y), transform.rotation);
+                
+                //生成したオブジェクトのタイルステイトを取得
                 tileObject[x, y] = obj.GetComponent<TileObject>();
 
                 //一致するタイルがあればそのタイルのIDを入れる
                 //なければ -1
                 if (block.sprite == sprite)
                 {
+                    //IDの登録
                     tileObject[x, y].tileId = block.id;
-                    tileIdList[x, y] = block.id;
+                    
+                    //カウント
                     tileNum++;
                     break;
                 }
                 else
                 {
-                    tileIdList[x, y] = -1;
+                    //登録されているタイルと一致しない場合
+                    tileObject[x, y].tileId = -1;
                 }
-
-                
             }
-
         }
-        Debug.Log("Tile num : " + tileNum);
     }
 
     void Update()
     {
-#if UNITY_EDITOR
-        if(Input.GetKeyDown(KeyCode.S))
+        #if UNITY_EDITOR
+        DebugKey();
+        #endif
+
+        //各タイルのステイトを更新
+        foreach (var tile in tileObject.WithIndex().Where(index => index.Element.isActive == true))
+        {
+            tile.Element.state.Update();
+        }
+    }
+
+    //(仮) ボタンを押すとカーソルの位置にあるタイルが燃える
+    public void Burning()
+    {
+        var x = (int)cursor.transform.position.x;
+        var y = (int)cursor.transform.position.y;
+        tileObject[x, y].SetTimeAndExecute(1.0f);
+    }
+
+    /// <summary>
+    /// デバッグ用のキー
+    /// </summary>
+    public void DebugKey()
+    {
+
+        //確認用
+        if (Input.GetKeyDown(KeyCode.S))
         {
             var x = (int)cursor.transform.position.x;
             var y = (int)cursor.transform.position.y;
@@ -99,57 +119,21 @@ public class TileManager : MonoBehaviour {
         {
             var x = (int)cursor.transform.position.x;
             var y = (int)cursor.transform.position.y;
-            Debug.Log("TileID : " + tileObject[x,y].tileId);
+            Debug.Log("TileID : " + tileObject[x, y].tileId);
         }
-
-#endif
-
-        //各タイルのステイトを更新
-        foreach (var tile in tileObject.WithIndex().Where(index => index.Element.isActive == true))
+        if(Input.GetKeyDown(KeyCode.F))
         {
-            tile.Element.state.Update();
-        }
-    }
+            var x = (int)cursor.transform.position.x;
+            var y = (int)cursor.transform.position.y;
 
-    public void Burning()
-    {
-        var x = (int)cursor.transform.position.x;
-        var y = (int)cursor.transform.position.y;
-        tileObject[x, y].SetTimeAndExecute(1.0f);
+            var pos = tileMap.LocalToCell(new Vector3(x, y, 0));
+
+            //オイルIDに変換
+            tileObject[pos.x, pos.y].tileId = (int)HowToBurn.OilTile;
+            
+        }
+
     }
 }
 
 
-
-//テスト
-static public class Extentions
-{
-    //次元配列用に入れ物を用意する
-    public struct IndexedItem<T>
-    {
-        public T Element { get; }
-        public int X { get; }
-        public int Y { get; }
-        internal IndexedItem(T element, int x, int y)
-        {
-            this.Element = element;
-            this.X = x;
-            this.Y = y;
-        }
-    }
-
-    //2次元配列用拡張メソッド(ループ用)
-    public static IEnumerable<IndexedItem<T>> WithIndex<T>(this T[,] self)
-    {
-        if (self == null)
-            throw new ArgumentNullException(nameof(self));
-
-        for (int x = 0; x < self.GetLength(0); x++)
-        {  
-            for (int y = 0; y < self.GetLength(1); y++)
-            {
-                yield return new IndexedItem<T>(self[x, y], x, y);
-            }
-        }
-    }
-}
