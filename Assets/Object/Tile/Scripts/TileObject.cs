@@ -30,7 +30,7 @@ public class TileObject : MonoBehaviour
 {
 
     static public TileManager tileManager;
-    static public FireManager fireManager;
+    static public FireController fireController;
     static public TileStatusTable table;        //Tile関連のテーブル
 
     public StateManager state;                  //オブジェクトのステイト
@@ -48,7 +48,7 @@ public class TileObject : MonoBehaviour
     {
         //各種マネージャーの取得
         if (tileManager == null) tileManager = FindObjectOfType<TileManager>();
-        if (fireManager == null) fireManager = FindObjectOfType<FireManager>();
+        if (fireController == null) fireController = FindObjectOfType<FireController>();
         if (table == null) table = TileStatusTable.GetInstance;
         
         //上下左右のタイルのポジションを作成
@@ -96,7 +96,7 @@ public class TileObject : MonoBehaviour
             //更新をしなくする
             //isActive = false;
             //炎のエフェクトを生成
-            if(!isCompleted)fireManager.GetObject(transform.position, transform.rotation);
+            if(!isCompleted)fireController.GetObject(transform.position, transform.rotation);
             isCompleted = true;
 
             //タイルIDの変更

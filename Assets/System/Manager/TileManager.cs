@@ -29,6 +29,7 @@ public class TileManager : MonoBehaviour {
 
     private CursorObject cursor;
  
+    private OilController oilController;
     // Use this for initialization
     void Awake()
     {
@@ -38,7 +39,8 @@ public class TileManager : MonoBehaviour {
         //カーソルの取得
         cursor = FindObjectOfType<CursorObject>();
 
-
+        //
+        oilController = FindObjectOfType<OilController>();
         //タイルオブジェクトを生成
         //中身は各タイルのState
         tileObject = new TileObject[STAGE_MAX_SIZE, STAGE_MAX_SIZE];
@@ -57,7 +59,10 @@ public class TileManager : MonoBehaviour {
             {
                 //タイルオブジェクトの生成
                 var obj = Instantiate(baseObj, new Vector3(x, y), transform.rotation);
-                
+
+                //子オブジェクトにする
+                obj.transform.parent = transform;
+
                 //生成したオブジェクトのタイルステイトを取得
                 tileObject[x, y] = obj.GetComponent<TileObject>();
 
@@ -102,6 +107,26 @@ public class TileManager : MonoBehaviour {
         tileObject[x, y].SetTimeAndExecute(1.0f);
     }
 
+    public void SetOil()
+    {
+        //セットする場所のポジションを作成
+        var x = (int)cursor.transform.position.x;
+        var y = (int)cursor.transform.position.y;
+        var pos = tileMap.LocalToCell(new Vector3(x, y, 0));
+        
+        //特定のタイルの上には置けないようにする
+        if (tileObject[pos.x, pos.y].tileId == (int)HowToBurn.OilTile) return;
+        if (tileObject[pos.x, pos.y].tileId == table.burningTile) return;
+        if (tileObject[pos.x, pos.y].tileId == table.burnnedTile) return;
+
+        //オイルIDに変換
+        tileObject[pos.x, pos.y].tileId = (int)HowToBurn.OilTile;
+
+        //Pivotの関係で位置がズレるので補正
+        var setPos = pos + new Vector3(0.5f, 0.5f);
+        oilController.GetInstance(setPos, transform.rotation);
+    }
+
     /// <summary>
     /// デバッグ用のキー
     /// </summary>
@@ -123,14 +148,7 @@ public class TileManager : MonoBehaviour {
         }
         if(Input.GetKeyDown(KeyCode.F))
         {
-            var x = (int)cursor.transform.position.x;
-            var y = (int)cursor.transform.position.y;
-
-            var pos = tileMap.LocalToCell(new Vector3(x, y, 0));
-
-            //オイルIDに変換
-            tileObject[pos.x, pos.y].tileId = (int)HowToBurn.OilTile;
-            
+            SetOil();
         }
 
     }
